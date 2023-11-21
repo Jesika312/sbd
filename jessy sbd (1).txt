@@ -1,0 +1,28 @@
+1. SELECT * from mahasiswa UNION SELECT * FROM mahasiswapjj;
+2. ALTER TABLE lth_jessy.mahasiswa ADD INDEX namaMhs (nama) USING BTREE;
+ALTER TABLE lth_jessy.mahasiswapjj ADD INDEX namaMhsPJJ (nama) USING BTREE;
+SELECT nama FROM mahasiswa UNION ALL SELECT nama FROM mahasiswapjj;
+3. SELECT * from mahasiswa intersect SELECT * from mahasiswapjj;
+4. SELECT * from mahasiswapjj left join mahasiswa on mahasiswa.nim = mahasiswapjj.nim WHERE mahasiswa.nim is null; 
+5. SELECT mahasiswa.nama FROM mahasiswa LEFT JOIN mahasiswapjj ON mahasiswa.nim = mahasiswapjj.nim WHERE mahasiswapjj.nim IS NULL;
+atau
+SELECT * FROM mahasiswa LEFT JOIN mahasiswapjj ON mahasiswa.nim = mahasiswapjj.nim WHERE mahasiswapjj.nim IS NULL;
+
+subquery
+1. SELECT * FROM karyawan WHERE id_departemen = ( SELECT id_departemen FROM karyawan WHERE nama_depan = "Emil" );
+2. SELECT nama_depan from karyawan WHERE gaji>(SELECT gaji from karyawan WHERE nama_depan='rino' and nama_belakang='cheros');
+atau
+
+3. SELECT nama_depan from karyawan WHERE gaji<(SELECT avg(gaji) from karyawan );
+4. SELECT * FROM karyawan WHERE id_departemen in ( SELECT id_departemen FROM departemen WHERE nama_departemen = "Finance" or region=2 );
+5. select nama_departemen from departemen where id_departemen in (SELECT id_departemen from karyawan where gaji > 3500000);
+atau
+SELECT nama_departemen FROM departemen WHERE EXISTS (select id_departemen from karyawan where id_departemen = departemen.id_departemen and gaji > 3500000)
+
+6. SELECT * FROM karyawan where not EXISTS (select * from departemen where id_departemen = karyawan.id_departemen and region=1);
+atau
+SELECT * FROM karyawan where id_departemen not in
+    (SELECT id_departemen FROM departemen
+        WHERE region = 1)
+
+7. SELECT * from karyawan where gaji < all (SELECT gaji FROM karyawan WHERE id_departemen= (SELECT id_departemen FROM departemen WHERE nama_departemen = "Finance"));
